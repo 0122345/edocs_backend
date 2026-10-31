@@ -55,7 +55,7 @@ public class SignerService {
     }
 
     public List<Signer> findByLastName(String lastName) {
-        return signerRepository.findByLastNameIgnoreCaseOrderByFirstnameAsc(lastName);
+        return signerRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
     }
 
     public List<Signer> findByLegalOfficerId(UUID legalOfficerId) {

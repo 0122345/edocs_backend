@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import mid.ntwari.edocs.model.Signer;
 
 public interface SignerRepository extends JpaRepository<Signer, UUID> {
-    List<Signer> findByLastNameIgnoreCaseOrderByFirstnameAsc(String lastName);
+    List<Signer> findByLastNameIgnoreCaseOrderByFirstNameAsc(String lastName);
 
     @Query("SELECT DISTINCT s FROM Signer s JOIN SignatureRequest r ON r.signer = s WHERE r.legalOfficer.id = :legalOfficerId")
     List<Signer> findByLegalOfficerId(@Param("legalOfficerId") UUID legalOfficerId);

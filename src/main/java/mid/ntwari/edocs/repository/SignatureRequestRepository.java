@@ -23,8 +23,10 @@ public interface SignatureRequestRepository extends JpaRepository<SignatureReque
     List<Object[]> countRequestsByStatus();
 
     @Modifying
-    @Query("UPDATE SignatureRequest r SET r.status = :newStatus" + "WHERE r.legalOfficer.id = :legalOfficerId " +
-     "AND r.requestDate = :requestDate" + "AND r.status <> :excludedStatus")
+    @Query("UPDATE SignatureRequest r SET r.status = :newStatus " + 
+           "WHERE r.legalOfficer.id = :legalOfficerId " +
+           "AND r.requestDate = :requestDate " + 
+           "AND r.status <> :excludedStatus")
      int cancelRequestsForLegalOfficerOnDate(
         @Param("legalOfficerId") UUID legalOfficerId,
         @Param("requestDate") LocalDate requestDate,

@@ -11,7 +11,7 @@ import mid.ntwari.edocs.model.ArchiveEntry;
 import mid.ntwari.edocs.model.SignatureRequest;
 
 public interface ArchiveEntryRepository extends JpaRepository<ArchiveEntry, UUID>{
-    @Query("SELECT a FROM ArchiveEntry a WHERE a.signatureRequest.signer.nationalId = :nationalId ORDER BY a.archivedDate DESC")
+    @Query("SELECT a FROM ArchiveEntry a WHERE a.signatureRequest.signer.nationalId = :nationalId ORDER BY a.archiveDate DESC")
     List<ArchiveEntry> findBySignerNationalId(@Param("nationalId") String nationalId);
 
     boolean existsBySignatureRequest(SignatureRequest signatureRequest);
