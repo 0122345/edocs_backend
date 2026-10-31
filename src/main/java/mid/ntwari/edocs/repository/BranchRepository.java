@@ -1,5 +1,11 @@
 package mid.ntwari.edocs.repository;
 
-public class BranchRepository {
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import mid.ntwari.edocs.model.Branch;
+
+public interface BranchRepository extends JpaRepository<Branch, UUID>{
     
 }
