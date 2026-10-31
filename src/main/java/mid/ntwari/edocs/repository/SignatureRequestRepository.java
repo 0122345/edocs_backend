@@ -1,5 +1,11 @@
 package mid.ntwari.edocs.repository;
 
-public class SignatureRequestRepository {
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import mid.ntwari.edocs.model.SignatureRequest;
+
+public interface SignatureRequestRepository extends JpaRepository<SignatureRequest, UUID> {
     
 }
