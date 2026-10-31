@@ -109,4 +109,15 @@ public class SignatureRequestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
     }
+
+    @GetMapping("/stats/by-status")
+    public ResponseEntity<List<Object[]>> countRequestByStatus() {
+        return ResponseEntity.ok(signatureRequestService.countRequestsByStatus());
+    }
+
+    @PatchMapping("/cancel-day")
+    public ResponseEntity<String> cancelDay(@RequestParam UUID legalOfficerId, @RequestParam String date) {
+        int count  = signatureRequestService.cancelDay(legalOfficerId, LocalDate.parse(date));
+        return ResponseEntity.ok(count + "signature requests cancelled");
+    }
 }

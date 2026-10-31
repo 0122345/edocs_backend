@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import mid.ntwari.edocs.model.RequestStatus;
 import mid.ntwari.edocs.model.SignatureRequest;
@@ -107,5 +108,16 @@ public class SignatureRequestService {
         found.setStatus(newStatus);
         signatureRequestRepository.save(found);
         return "Signature request status updated sucessfully";
+    }
+
+    public List<Object[]> countRequestsByStatus() {
+        return signatureRequestRepository.countRequestsByStatus();
+    }
+
+    @Transactional
+    public int cancelDay(UUID legalOfficerId, LocalDate date) {
+        return signatureRequestRepository.cancelRequestsForLegalOfficerOnDate(
+            legalOfficerId, date, RequestStatus.DECLINED, RequestStatus.SIGNED
+        );
     }
 }
