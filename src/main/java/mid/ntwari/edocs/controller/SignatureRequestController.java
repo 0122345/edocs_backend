@@ -1,5 +1,6 @@
 package mid.ntwari.edocs.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,5 +78,12 @@ public class SignatureRequestController {
     @GetMapping("/by-status")
     public ResponseEntity<List<SignatureRequest>> findByStatus(@RequestParam RequestStatus status) {
         return ResponseEntity.ok(signatureRequestService.findByStatus(status));
+    }
+
+    @GetMapping("/between")
+    public ResponseEntity<List<SignatureRequest>> findBetweenDates(@RequestParam String start, @RequestParam String end){
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        return ResponseEntity.ok(signatureRequestService.findBetweenDates(startDate, endDate));
     }
 }
