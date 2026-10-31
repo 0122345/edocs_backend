@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+
+import mid.ntwari.edocs.model.RequestStatus;
 import mid.ntwari.edocs.model.SignatureRequest;
 import mid.ntwari.edocs.repository.SignatureRequestRepository;
 
@@ -56,5 +58,8 @@ public class SignatureRequestService {
             return true;
         }
         return false;
+    }
+    public List<SignatureRequest> findByStatus(RequestStatus status) {
+        return signatureRequestRepository.findByStatusOrderByRequestDateAsc(status);
     }
 }
