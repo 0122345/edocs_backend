@@ -43,4 +43,8 @@ public class BranchService {
         }
         return false;
     }
+
+    public List<Branch> findFreeBranches() {
+        return branchRepository.findFreeBranches();
+    }
 }

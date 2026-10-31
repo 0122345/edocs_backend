@@ -1,5 +1,6 @@
 package mid.ntwari.edocs.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -60,5 +61,10 @@ public class BranchController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The branch with that id does not exist");
         }
+    }
+
+    @GetMapping("/free")
+    public ResponseEntity<List<Branch>> findFreeBranches() {
+        return ResponseEntity.ok(branchService.findFreeBranches());
     }
 }

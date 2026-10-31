@@ -16,15 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mid.ntwari.edocs.model.Signer;
+import mid.ntwari.edocs.service.LegalOfficerService;
 import mid.ntwari.edocs.service.SignerService;
 
 @RestController
 @RequestMapping("/signers")
 public class SignerController {
     private final SignerService signerService;
+    private final LegalOfficerService legalOfficerService;
 
-    public SignerController(SignerService signerService) {
+    public SignerController(SignerService signerService, LegalOfficerService legalOfficeService) {
         this.signerService = signerService;
+        this.legalOfficerService = legalOfficeService;
     }
 
     @PostMapping("/save")
@@ -86,5 +89,13 @@ public class SignerController {
     @GetMapping("/by-last-name")
     public ResponseEntity<List<Signer>> findByLastName(@RequestParam String lastName) {
         return ResponseEntity.ok(signerService.findByLastName(lastName));
+    }
+
+    @GetMapping("/of-legal-officer/{legalOfficerId}")
+    public ResponseEntity<?> findByLegalOfficerId(@PathVariable UUID legalOfficerId) {
+        if(legalOfficerService.findById(legalOfficerId) == null)  {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The legal officer with dis id doesn't exists");
+        }
+        return ResponseEntity.ok(signerService.findByLegalOfficerId(legalOfficerId));
     }
 }

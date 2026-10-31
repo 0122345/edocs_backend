@@ -2,7 +2,6 @@ package mid.ntwari.edocs.service;
 
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 
 import mid.ntwari.edocs.model.LegalOfficer;
@@ -51,5 +50,8 @@ public class LegalOfficerService {
             return true;
         }
         return false;
+    }
+    public List<LegalOfficer> findByDocumentTypeName(String name) {
+        return legalOfficerRepository.findByDocumentTypeName(name);
     }
 }

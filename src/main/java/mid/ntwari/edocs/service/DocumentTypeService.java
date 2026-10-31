@@ -37,4 +37,8 @@ public class DocumentTypeService {
         }
         return false;
     }
+
+    public List<DocumentType> findUnusedDocumentTypes() {
+        return documentTypeRepository.findUnusedDocumentTypes();
+    }
 }

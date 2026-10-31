@@ -65,4 +65,9 @@ public class DocumentTypeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The document type with that is does not exist");
         }
     }
+
+    @GetMapping("/unused")
+    public ResponseEntity<List<DocumentType>> findUnusedDocumentTypes() {
+        return ResponseEntity.ok(documentTypeService.findUnusedDocumentTypes());
+    }
 }
