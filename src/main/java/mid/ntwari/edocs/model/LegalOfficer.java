@@ -46,12 +46,29 @@ public class LegalOfficer {
         return lastName;
     }
 
-    public void setlastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     public String getEmail() {
         return email;
+    }
+
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
+    public void setDocumentTypes(List<DocumentType> documentTypes) {
+        this.documentTypes = documentTypes;
+    }
+
+    public List<DocumentType> getDocumentTypes() {
+        return documentTypes;
     }
 
     public void getEmail(String email) {
