@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -120,4 +124,21 @@ public class SignatureRequestController {
         int count  = signatureRequestService.cancelDay(legalOfficerId, LocalDate.parse(date));
         return ResponseEntity.ok(count + "signature requests cancelled");
     }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<SignatureRequest>> findAll(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "requestDate,desc") String sort) {
+                String[] sortDetails = sort.split(",");
+                String sortField = sortDetails[0];
+                Sort.Direction direction = Sort.Direction.ASC;
+
+                if(sortDetails.length > 1) {
+                    if(sortDetails[1].equalsIgnoreCase("desc")) {
+                        direction = Sort.Direction.DESC;
+                    }
+                }
+
+                Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortField));
+                return ResponseEntity.ok(signatureRequestService.findAll(pageable));
+            }
 }

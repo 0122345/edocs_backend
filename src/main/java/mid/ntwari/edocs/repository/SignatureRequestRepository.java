@@ -31,4 +31,8 @@ public interface SignatureRequestRepository extends JpaRepository<SignatureReque
         @Param("newStatus") RequestStatus newStatus,
         @Param("excludedStatus") RequestStatus excludedStatus
      );
+
+     long countByRequestDate(LocalDate requestDate);
+
+     long countByStatus(RequestStatus status);
 }
