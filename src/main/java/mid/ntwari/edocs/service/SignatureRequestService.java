@@ -8,15 +8,18 @@ import org.springframework.stereotype.Service;
 
 import mid.ntwari.edocs.model.RequestStatus;
 import mid.ntwari.edocs.model.SignatureRequest;
+import mid.ntwari.edocs.repository.ArchiveEntryRepository;
 import mid.ntwari.edocs.repository.SignatureRequestRepository;
 
 @Service
 public class SignatureRequestService {
     private final SignatureRequestRepository signatureRequestRepository;
+    private final ArchiveEntryRepository archiveEntryRepository;
 
     public SignatureRequestService(
-            SignatureRequestRepository signatureRequestRepository) {
+            SignatureRequestRepository signatureRequestRepository, ArchiveEntryRepository archiveEntryRepository) {
         this.signatureRequestRepository = signatureRequestRepository;
+        this.archiveEntryRepository = archiveEntryRepository;
     }
 
     public String  save(SignatureRequest signatureRequest) {
@@ -61,12 +64,18 @@ public class SignatureRequestService {
         return null;
     }
 
-    public boolean delete(UUID id) {
-        if (signatureRequestRepository.existsById(id)) {
-            signatureRequestRepository.deleteById(id);
-            return true;
+    public String delete(UUID id) {
+        if (!signatureRequestRepository.existsById(id)) {
+            return "The signature request with that id does not exist";  
         }
-        return false;
+        SignatureRequest signatureRequest = signatureRequestRepository.findById(id).get();
+
+        if(archiveEntryRepository.existsBySignatureRequest(signatureRequest)) {
+            return "That signature request has entries, delete them first";
+        }
+        
+        signatureRequestRepository.deleteById(id);
+        return "Signature request deleted successfully";
     }
     public List<SignatureRequest> findByStatus(RequestStatus status) {
         return signatureRequestRepository.findByStatusOrderByRequestDateAsc(status);

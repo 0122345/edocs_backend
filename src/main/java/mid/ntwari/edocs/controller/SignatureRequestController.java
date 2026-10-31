@@ -74,13 +74,15 @@ public class SignatureRequestController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable UUID id) {
 
-        boolean deleted = signatureRequestService.delete(id);
+        String result = signatureRequestService.delete(id);
 
-        if (deleted) {
-            return ResponseEntity.ok("Signature request deleted successfully");
+        if (result.equals("The signature request with that id does not exist")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+        } else if(result.equals("That signature request has archive entries, delete them first")){ 
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The signature request with that id does not exist");
-        }
+        return ResponseEntity.ok("Signature request deleted successfully");
+         }
     }
 
     @GetMapping("/by-status")
