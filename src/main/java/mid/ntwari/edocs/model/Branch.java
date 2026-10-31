@@ -17,7 +17,7 @@ public class Branch {
     private int branchNumber;
     private String name;
 
-    private UUID getId() {
+    public UUID getId() {
         return id;
     }
 

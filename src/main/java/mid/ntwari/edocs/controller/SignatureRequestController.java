@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,8 +32,15 @@ public class SignatureRequestController {
 
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody SignatureRequest signatureRequest) {
-        signatureRequestService.save(signatureRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Signature request saved successfully");
+        String result = signatureRequestService.save(signatureRequest);
+        
+        if(result.equals("Signature request date cannot be in the past")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        } else if(result.equals("LegalOfficer already has a signature request on that date")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+        } else{
+        return ResponseEntity.status(HttpStatus.CREATED).body("Signature request saved successfully"); 
+        }
     }
 
     @GetMapping("/all")
@@ -85,5 +93,18 @@ public class SignatureRequestController {
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
         return ResponseEntity.ok(signatureRequestService.findBetweenDates(startDate, endDate));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<String> updateStatus(@PathVariable UUID id, @RequestParam RequestStatus status) {
+        String result = signatureRequestService.updateStatus(id, status);
+
+        if(result.equals("The signature request with that id does not exist")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+        } else if (result.equals("Signature request status updated successfully")){
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
     }
 }

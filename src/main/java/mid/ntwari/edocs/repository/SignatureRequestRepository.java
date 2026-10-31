@@ -11,4 +11,7 @@ import mid.ntwari.edocs.model.SignatureRequest;
 public interface SignatureRequestRepository extends JpaRepository<SignatureRequest, UUID> {
     List<SignatureRequest> findByStatusOrderByRequestDateAsc(RequestStatus status);
     List<SignatureRequest> findByRequestDateBetweenOrderByRequestDateAsc(LocalDate start, LocalDate end);
+    boolean existsByLegalOfficer_IdAndRequestDateAndStatusNot(
+        UUID legalOfficerId, LocalDate requestDate, RequestStatus status
+    );
 }

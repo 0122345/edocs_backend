@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -73,4 +74,38 @@ public class LegalOfficerController {
     public ResponseEntity<List<LegalOfficer>> findByDocumentTypeName(@RequestParam String name) {
         return ResponseEntity.ok(legalOfficerService.findByDocumentTypeName(name));
     }
+
+    @PutMapping("/{legalOfficerId}/document-types/{documentTypeId}")
+    public ResponseEntity<String> addDocumentType(@PathVariable UUID legalOfficerId,
+            @PathVariable UUID documentTypeId) {
+        String result = legalOfficerService.addDocumentType(legalOfficerId, documentTypeId);
+
+        if (result.equals("The legal officer with that id does not exist")
+                || result.equals("That document type does not exist")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+
+        } else if (result.equals("The legal officer already has that document type")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+
+        } else {
+            return ResponseEntity.ok(result);
+        }
+    }
+
+    @PatchMapping("/{legalOfficerId}/branch")
+    public ResponseEntity<String> changeBranch(@PathVariable UUID legalOfficerId, @RequestParam int branchNumber) {
+        String result = legalOfficerService.changeBranch(legalOfficerId, branchNumber);
+
+        if (result.equals("The legal officer with that id does not exist")
+                || result.equals("The branch with that branchNumber does not exist")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+
+        } else if (result.equals("That branch is taken by another legal officer")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+
+        } else {
+            return ResponseEntity.ok(result);
+        }
+    }
+
 }
