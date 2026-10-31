@@ -53,4 +53,8 @@ public class SignerService {
         }
         return false;
     }
+
+    public List<Signer> findByLastName(String lastName) {
+        return signerRepository.findByLastNameIgnoreCaseOrderByFirstnameAsc(lastName);
+    }
 }
